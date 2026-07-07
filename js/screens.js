@@ -142,7 +142,7 @@
           term.appendChild(document.createTextNode("$ "));
           var inp = document.createElement("input");
           term.appendChild(inp);
-          inp.focus();
+          setTimeout(function () { inp.focus(); }, 0);
           waitingInput = { inp: inp, line: line };
           return false;
         }
@@ -178,6 +178,15 @@
 
   S.playScenes = function (app, ctx, scenes, mod, onDone) {
     var idx = 0;
+    var currentNext;
+    function onKeydown(e) {
+      if (e.key !== " ") return;
+      var active = document.activeElement;
+      if (active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA")) return;
+      e.preventDefault();
+      currentNext();
+    }
+    document.addEventListener("keydown", onKeydown);
     function show() {
       S.clear(app);
       var screen = S.el("div", "screen");
@@ -187,10 +196,15 @@
       b.onclick = next;
       screen.appendChild(b);
       app.appendChild(screen);
+      currentNext = next;
       function next() {
+        if (!current) return;
         if (current.interactive && current.advance && current.advance() === false) return;
         idx++;
-        if (idx >= scenes.length) return onDone();
+        if (idx >= scenes.length) {
+          document.removeEventListener("keydown", onKeydown);
+          return onDone();
+        }
         show();
       }
     }
