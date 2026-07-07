@@ -87,3 +87,168 @@
 
   window.Screens = { clear: clear, el: el, title: title, map: map, levels: levels };
 })();
+
+(function () {
+  var S = window.Screens;
+
+  function sceneNode(scene, mod, onAdvance) {
+    var box = S.el("div", "panel");
+    if (scene.type === "dialogue") {
+      var d = S.el("div", "dialogue-box");
+      var who = scene.speaker === "carl" ? "Carl" : (mod ? mod.mentor.name : "???");
+      var spriteId = scene.speaker === "carl" ? "carl" : (mod ? mod.mentor.spriteId : "carl");
+      d.appendChild(window.Sprites.el(spriteId, 4));
+      var t = S.el("div");
+      t.appendChild(S.el("div", "speaker", who));
+      t.appendChild(S.el("p", null, scene.text));
+      d.appendChild(t);
+      box.appendChild(d);
+      return { node: box, interactive: false };
+    }
+    if (scene.type === "vignette") {
+      box.appendChild(window.Sprites.el(scene.id, 6));
+      box.appendChild(S.el("p", null, scene.caption));
+      return { node: box, interactive: false };
+    }
+    if (scene.type === "diagram") {
+      var step = 0;
+      var holder = S.el("div");
+      box.appendChild(holder);
+      var cap = S.el("p");
+      box.appendChild(cap);
+      function render() {
+        holder.innerHTML = "";
+        window.Diagrams[scene.id](holder, step);
+        cap.textContent = scene.steps[step].caption;
+      }
+      render();
+      // Diagram consumes "advance" until its last step is shown.
+      return {
+        node: box, interactive: true,
+        advance: function () {
+          if (step < scene.steps.length - 1) { step++; render(); return false; }
+          return true;
+        },
+      };
+    }
+    if (scene.type === "terminal") {
+      var term = S.el("div", "term");
+      box.appendChild(term);
+      var i = 0, waitingInput = null;
+      function showLine() {
+        if (i >= scene.lines.length) return true;
+        var line = scene.lines[i];
+        if (scene.playerTypes) {
+          term.appendChild(document.createTextNode("$ "));
+          var inp = document.createElement("input");
+          term.appendChild(inp);
+          inp.focus();
+          waitingInput = { inp: inp, line: line };
+          return false;
+        }
+        term.appendChild(document.createTextNode("$ " + line.cmd + "\n" + line.output + "\n"));
+        i++;
+        return false;
+      }
+      showLine();
+      return {
+        node: box, interactive: true,
+        advance: function () {
+          if (waitingInput) {
+            var w = waitingInput;
+            if (window.Answers.normalizeCmd(w.inp.value) !== window.Answers.normalizeCmd(w.line.cmd)) {
+              w.inp.value = ""; w.inp.placeholder = "try: " + w.line.cmd; return false;
+            }
+            w.inp.replaceWith(document.createTextNode(w.line.cmd));
+            term.appendChild(document.createTextNode("\n" + w.line.output + "\n"));
+            waitingInput = null; i++;
+          }
+          if (i >= scene.lines.length) return true;
+          return showLine() === true;
+        },
+      };
+    }
+    if (scene.type === "widget") {
+      var done = false;
+      window.Widgets.mount(scene.id, box, function () { done = true; onAdvance(); });
+      return { node: box, interactive: true, advance: function () { return done; } };
+    }
+    throw new Error("unknown scene type: " + scene.type);
+  }
+
+  S.playScenes = function (app, ctx, scenes, mod, onDone) {
+    var idx = 0;
+    function show() {
+      S.clear(app);
+      var screen = S.el("div", "screen");
+      var current = sceneNode(scenes[idx], mod, next);
+      screen.appendChild(current.node);
+      var b = S.el("button", "btn", "Onward");
+      b.onclick = next;
+      screen.appendChild(b);
+      app.appendChild(screen);
+      function next() {
+        if (current.interactive && current.advance && current.advance() === false) return;
+        idx++;
+        if (idx >= scenes.length) return onDone();
+        show();
+      }
+    }
+    show();
+  };
+
+  S.teach = function (app, ctx, m, l) {
+    var mod = window.GameData.modules[m];
+    var seq = [];
+    if (l === 0 && !ctx.state.hasAttempted(m, 0)) seq = seq.concat(mod.arrival);
+    seq = seq.concat(mod.levels[l].scenes);
+    S.playScenes(app, ctx, seq, mod, function () { ctx.go("showdown", { m: m, l: l }); });
+  };
+})();
+
+(function () {
+  var Diagrams = {};
+
+  function stackDiagram(container, layers, upto) {
+    var c = document.createElement("canvas");
+    c.className = "pixel-canvas";
+    c.width = 560; c.height = 40 * layers.length + 8;
+    var g = c.getContext("2d");
+    g.font = "16px monospace";
+    for (var i = 0; i <= upto && i < layers.length; i++) {
+      var y = c.height - 40 * (i + 1);
+      layers[i].forEach(function (cell, j) {
+        var x = 8 + j * (540 / layers[i].length);
+        g.fillStyle = cell.fill;
+        g.fillRect(x, y, 540 / layers[i].length - 8, 32);
+        g.fillStyle = cell.fill === "#000" ? "#fff" : "#000";
+        g.fillText(cell.label, x + 6, y + 21);
+      });
+    }
+    container.appendChild(c);
+  }
+
+  Diagrams["vm-vs-container"] = function (container, step) {
+    // steps: 0 hardware, 1 host OS, 2 hypervisor|runtime, 3 guests|apps
+    var rows = [
+      [{ label: "HARDWARE", fill: "#000" }, { label: "HARDWARE", fill: "#000" }],
+      [{ label: "HOST OS", fill: "#888" }, { label: "HOST OS", fill: "#888" }],
+      [{ label: "HYPERVISOR", fill: "#ccc" }, { label: "CONTAINER RUNTIME", fill: "#ccc" }],
+      [{ label: "GUEST OS + APP x3", fill: "#fff" }, { label: "APP  APP  APP", fill: "#fff" }],
+    ];
+    stackDiagram(container, rows, step);
+  };
+
+  Diagrams["image-layers"] = function (container, step) {
+    var rows = [
+      [{ label: "BASE IMAGE (alpine)", fill: "#000" }],
+      [{ label: "LAYER: install deps", fill: "#888" }],
+      [{ label: "LAYER: copy app", fill: "#ccc" }],
+      [{ label: "CONTAINER: writable layer", fill: "#fff" }],
+    ];
+    stackDiagram(container, rows, step);
+  };
+
+  window.Diagrams = Diagrams;
+  window.DIAGRAM_IDS = Object.keys(Diagrams);
+})();
