@@ -8,11 +8,14 @@
     var api = { available: true };
     function fail() { api.available = false; }
     api.get = function () {
+      var raw;
       try {
-        var raw = backend.getItem(KEY);
-        if (raw === null || raw === undefined) return memory;
-        return JSON.parse(raw);
+        raw = backend.getItem(KEY);
       } catch (e) { fail(); return memory; }
+      if (raw === null || raw === undefined) return memory;
+      try {
+        return JSON.parse(raw);
+      } catch (e) { return memory; }
     };
     api.set = function (obj) {
       memory = obj;

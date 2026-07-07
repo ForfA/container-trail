@@ -38,6 +38,13 @@ test("corrupt save loads as fresh state", () => {
   assert.equal(st.isLevelCompleted(0, 0), false);
 });
 
+test("corrupt save does not flip storage availability", () => {
+  const b = fakeBackend({ "container-trail:save:v1": "{not json" });
+  const s = createStorage(b);
+  s.get();
+  assert.equal(s.available, true);
+});
+
 test("unlock chain: modules and levels gate in order", () => {
   const st = createState(createStorage(fakeBackend()), [2, 2]);
   assert.equal(st.isModuleUnlocked(0), true);
