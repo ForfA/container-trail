@@ -99,6 +99,100 @@
     render();
   };
 
+  // Module 5: publish a host port to reach a container port.
+  registry["port-bridge"] = function (container, onDone) {
+    var mapped = false;
+    var cap = E("p", null, "The web app listens on port 80 INSIDE the container. The town (host) can't reach it yet.");
+    var log = E("div", "term", "");
+    var req = E("button", "btn", "curl localhost:8080");
+    req.onclick = function () {
+      if (!mapped) {
+        log.textContent += "$ curl localhost:8080\ncurl: (7) connection refused\n";
+      } else {
+        log.textContent += "$ curl localhost:8080\n<h1>Howdy from the container</h1>\n";
+        cap.textContent = "-p 8080:80 = host port 8080 bridged to container port 80. That's publishing.";
+        onDone();
+      }
+    };
+    var map = E("button", "btn", "docker run -p 8080:80 web");
+    map.onclick = function () {
+      mapped = true;
+      map.disabled = true;
+      log.textContent += "$ docker run -d -p 8080:80 web\n(container started, 8080 -> 80 bridged)\n";
+    };
+    container.appendChild(cap); container.appendChild(log);
+    container.appendChild(req); container.appendChild(map);
+  };
+
+  // Module 7: declare desired replicas; the controller reconciles.
+  registry["replica-slider"] = function (container, onDone) {
+    var desired = 1, actual = 1, shot = false;
+    var cap = E("p", null, "You declare DESIRED state. The Deployment's controller makes ACTUAL match. Set 3+, then shoot one.");
+    var row = E("div", "panel");
+    var status = E("p", null, "");
+    function render() {
+      row.innerHTML = "";
+      for (var i = 0; i < actual; i++) row.appendChild(window.Sprites.el("pod", 3));
+      status.textContent = "desired: " + desired + "  actual: " + actual;
+      if (shot && actual === desired && desired >= 3) {
+        cap.textContent = "You killed a pod — the controller saw actual < desired and replaced it. Nobody asked it to; that's reconciliation.";
+        onDone();
+      }
+    }
+    var slider = document.createElement("input");
+    slider.type = "range"; slider.min = "1"; slider.max = "5"; slider.value = "1";
+    slider.oninput = function () {
+      desired = Number(slider.value);
+      actual = desired;
+      render();
+    };
+    var shoot = E("button", "btn", "Shoot a pod");
+    shoot.onclick = function () {
+      if (actual === 0) return;
+      actual--; shot = true; render();
+      status.textContent += "   (controller: actual < desired, starting a new pod...)";
+      setTimeout(function () { actual = desired; render(); }, 900);
+    };
+    container.appendChild(cap); container.appendChild(row);
+    container.appendChild(status); container.appendChild(slider); container.appendChild(shoot);
+    render();
+  };
+
+  // Module 8: fail liveness vs readiness, see the different consequences.
+  registry["probe-flip"] = function (container, onDone) {
+    var restarts = 0, didLive = false, didReady = false;
+    var cap = E("p", null, "Two probes, two meanings. Fail each one and watch what Kubernetes does.");
+    var status = E("div", "term", "");
+    function show(lines) { status.textContent = lines.join("\n"); }
+    function base(state, ready) {
+      return ["pod: web-6f7d   status: " + state,
+              "ready: " + ready + "   restarts: " + restarts,
+              "service endpoints: " + (ready === "true" ? "web-6f7d" : "(none — no traffic sent)")];
+    }
+    show(base("Running", "true"));
+    var live = E("button", "btn", "Fail the LIVENESS probe");
+    live.onclick = function () {
+      restarts++;
+      didLive = true;
+      show(base("Running (container restarted)", "true").concat(["liveness failed -> kubelet killed and restarted the container"]));
+      check();
+    };
+    var ready = E("button", "btn", "Fail the READINESS probe");
+    ready.onclick = function () {
+      didReady = true;
+      show(base("Running", "false").concat(["readiness failed -> pod stays alive but is removed from the Service"]));
+      check();
+    };
+    function check() {
+      if (didLive && didReady) {
+        cap.textContent = "Liveness = restart me. Readiness = don't send me traffic. Mixing them up causes restart storms.";
+        onDone();
+      }
+    }
+    container.appendChild(cap); container.appendChild(status);
+    container.appendChild(live); container.appendChild(ready);
+  };
+
   var API = {
     mount: function (id, container, onDone) {
       if (!registry[id]) throw new Error("unknown widget: " + id);
