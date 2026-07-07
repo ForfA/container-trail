@@ -126,7 +126,7 @@
 
   // Module 7: declare desired replicas; the controller reconciles.
   registry["replica-slider"] = function (container, onDone) {
-    var desired = 1, actual = 1, shot = false;
+    var desired = 1, actual = 1;
     var cap = E("p", null, "You declare DESIRED state. The Deployment's controller makes ACTUAL match. Set 3+, then shoot one.");
     var row = E("div", "panel");
     var status = E("p", null, "");
@@ -134,10 +134,6 @@
       row.innerHTML = "";
       for (var i = 0; i < actual; i++) row.appendChild(window.Sprites.el("pod", 3));
       status.textContent = "desired: " + desired + "  actual: " + actual;
-      if (shot && actual === desired && desired >= 3) {
-        cap.textContent = "You killed a pod — the controller saw actual < desired and replaced it. Nobody asked it to; that's reconciliation.";
-        onDone();
-      }
     }
     var slider = document.createElement("input");
     slider.type = "range"; slider.min = "1"; slider.max = "5"; slider.value = "1";
@@ -149,9 +145,16 @@
     var shoot = E("button", "btn", "Shoot a pod");
     shoot.onclick = function () {
       if (actual === 0) return;
-      actual--; shot = true; render();
+      var shotDesired = desired;
+      actual--; render();
       status.textContent += "   (controller: actual < desired, starting a new pod...)";
-      setTimeout(function () { actual = desired; render(); }, 900);
+      setTimeout(function () {
+        actual = desired; render();
+        if (shotDesired >= 3 && actual === desired) {
+          cap.textContent = "You killed a pod — the controller saw actual < desired and replaced it. Nobody asked it to; that's reconciliation.";
+          onDone();
+        }
+      }, 900);
     };
     container.appendChild(cap); container.appendChild(row);
     container.appendChild(status); container.appendChild(slider); container.appendChild(shoot);
