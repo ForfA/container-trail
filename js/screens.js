@@ -221,6 +221,116 @@
 })();
 
 (function () {
+  var S = window.Screens;
+
+  S.showdown = function (app, ctx, m, l) {
+    var mod = window.GameData.modules[m];
+    var level = mod.levels[l];
+    ctx.state.markAttempted(m, l);
+    var sd = window.createShowdown(level.questions);
+
+    function render(feedback) {
+      S.clear(app);
+      var s = S.el("div", "screen");
+      s.appendChild(S.el("h2", null, level.title + " — Showdown"));
+      var p = sd.progress();
+      var canteen = "";
+      for (var i = 0; i < 3; i++) canteen += i < sd.waters() ? "▮" : "▯";
+      s.appendChild(S.el("div", "canteen", "WATER " + canteen + "   " + p.answered + "/" + p.total));
+      if (feedback) s.appendChild(feedback);
+      else s.appendChild(questionNode());
+      app.appendChild(s);
+    }
+
+    function questionNode() {
+      var q = sd.current();
+      var box = S.el("div", "panel");
+      box.appendChild(S.el("p", null, q.prompt));
+      var opts = S.el("div", "options");
+      function submit(resp) {
+        var r = sd.answer(resp);
+        if (r.finished) return finish();
+        if (r.correct) return render();
+        var fb = S.el("div", "panel");
+        fb.appendChild(S.el("p", null, r.restarted
+          ? "Canteen's dry. Back to the start of the showdown — questions reshuffled."
+          : "Not quite."));
+        fb.appendChild(S.el("p", null, r.explain));
+        var b = S.el("button", "btn", r.restarted ? "Refill & retry" : "Try again");
+        b.onclick = function () { render(); };
+        fb.appendChild(b);
+        render(fb);
+      }
+      if (q.type === "mc") {
+        q.options.forEach(function (opt, i) {
+          var b = S.el("button", "btn", opt);
+          b.onclick = function () { submit(i); };
+          opts.appendChild(b);
+        });
+      } else if (q.type === "tf") {
+        [true, false].forEach(function (v) {
+          var b = S.el("button", "btn", v ? "True" : "False");
+          b.onclick = function () { submit(v); };
+          opts.appendChild(b);
+        });
+      } else if (q.type === "cmd") {
+        var inp = document.createElement("input");
+        inp.className = "btn";
+        var b = S.el("button", "btn", "Fire");
+        b.onclick = function () { submit(inp.value); };
+        opts.appendChild(inp); opts.appendChild(b);
+      }
+      box.appendChild(opts);
+      return box;
+    }
+
+    function finish() {
+      ctx.state.completeLevel(m, l);
+      if (ctx.state.isModuleCompleted(m)) {
+        S.playScenes(app, ctx, mod.departure, mod, function () {
+          S.clear(app);
+          var s = S.el("div", "screen");
+          s.appendChild(S.el("h2", null, "Trail token earned"));
+          s.appendChild(window.Sprites.el("token" + (m + 1), 8));
+          var b = S.el("button", "btn", "Onward");
+          b.onclick = function () {
+            ctx.go(m === window.GameData.modules.length - 1 ? "epilogue" : "map");
+          };
+          s.appendChild(b);
+          app.appendChild(s);
+        });
+      } else {
+        ctx.go("levels", { m: m });
+      }
+    }
+
+    render();
+  };
+
+  var EPILOGUE = [
+    { type: "vignette", id: "monolith", caption: "Monolith Gulch. The old machine wheezes one last time." },
+    { type: "dialogue", speaker: "carl", text: "We split her up. Piece by piece: images, containers, a cluster to herd 'em." },
+    { type: "dialogue", speaker: "carl", text: "Now when one falls over, the town don't fall with it. The trail taught me that." },
+    { type: "vignette", id: "crate", caption: "Beside the silent Monolith: a corral of containers, humming." },
+  ];
+
+  S.epilogue = function (app, ctx) {
+    S.playScenes(app, ctx, EPILOGUE, null, function () {
+      S.clear(app);
+      var s = S.el("div", "screen");
+      s.appendChild(S.el("h1", null, "The End"));
+      s.appendChild(window.Sprites.el("carl-hat-tip", 8));
+      var again = S.el("button", "btn", "Ride again (reset)");
+      again.onclick = function () { ctx.state.reset(); ctx.go("title"); };
+      var stay = S.el("button", "btn", "Stay on the trail");
+      stay.onclick = function () { ctx.go("map"); };
+      s.appendChild(again); s.appendChild(stay);
+      app.appendChild(s);
+    });
+  };
+})();
+
+(function () {
   var Diagrams = {};
 
   function stackDiagram(container, layers, upto) {
