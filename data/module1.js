@@ -1,4 +1,5 @@
 // module1.js — TEMPORARY sample content; replaced wholesale by the module 1 content task
+if (typeof window === "undefined") { global.window = global.window || { GameData: { modules: [] } }; }
 window.GameData = window.GameData || { modules: [] };
 window.GameData.modules[0] = {
   id: 1,
@@ -21,3 +22,4 @@ window.GameData.modules[0] = {
     },
   ],
 };
+if (typeof module !== "undefined") module.exports = window.GameData.modules[0];
