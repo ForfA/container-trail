@@ -95,8 +95,10 @@ window.GameData.modules[4] = {
             { cmd: "docker exec db cat /var/lib/db/note.txt", output: "hello" },
           ] },
         { type: "dialogue", speaker: "mentor", text: "Gone, that wagon. Rebuilt it fresh off the same image — but the note's still there. Data lived in the volume, not the container, so removing the container never touched it." },
-        { type: "dialogue", speaker: "mentor", text: "Volume's Docker's own storehouse — it manages where that data actually sits, you don't need to know or care. Bind mount's different: you point straight at a folder on the host machine. Good for watching your own source code change live while you work, but you're on the hook for that path existing." },
-        { type: "dialogue", speaker: "mentor", text: "-v data:/var/lib/db — storehouse name on the left, where it shows up inside the wagon on the right. Named volume for a database's real data. Bind mount when you want the host's own source folder along for the ride, mid-development." },
+        { type: "dialogue", speaker: "mentor", text: "Volume's Docker's own storehouse — it manages where that data actually sits, you don't need to know or care." },
+        { type: "dialogue", speaker: "mentor", text: "Bind mount's different: you point straight at a folder on the host machine. Good for watching source code change live while you work." },
+        { type: "dialogue", speaker: "mentor", text: "-v data:/var/lib/db — storehouse name on the left, where it shows up inside the wagon on the right." },
+        { type: "dialogue", speaker: "mentor", text: "Named volume for a database's real data. Bind mount when you want the host's own source folder along for the ride, mid-development." },
       ],
       questions: [
         { type: "mc", prompt: "What happens to data written into a container's writable layer once the container is removed?", options: [
@@ -136,7 +138,8 @@ window.GameData.modules[4] = {
             { cmd: "docker compose up", output: "[+] Running 3/3\n ✔ Network bridgecrossing_default   Created\n ✔ Container bridgecrossing-db-1    Created\n ✔ Container bridgecrossing-web-1   Created\nAttaching to db-1, web-1\ndb-1   | 2026-07-07 09:40:01 UTC [1] LOG:  database system is ready to accept connections\nweb-1  | Server listening on port 80" },
           ] },
         { type: "dialogue", speaker: "mentor", text: "One manifest, one command. Every teammate who runs it gets the identical camp — same services, same network, same storehouse." },
-        { type: "dialogue", speaker: "mentor", text: "And notice — web and db, they never got a -p between them, never needed a docker network create either. Compose hands every service in the file its own seat on one shared network, and they find each other by service name, same as my built-in bridge." },
+        { type: "dialogue", speaker: "mentor", text: "And notice — web and db never got a -p between them, never needed a docker network create either." },
+        { type: "dialogue", speaker: "mentor", text: "Compose hands every service its own seat on one shared network — they find each other by service name, same as my built-in bridge." },
       ],
       questions: [
         { type: "mc", prompt: "What does a Compose file (compose.yaml) do?", options: [

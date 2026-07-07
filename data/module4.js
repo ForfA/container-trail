@@ -26,7 +26,8 @@ window.GameData.modules[3] = {
           ] },
         { type: "dialogue", speaker: "mentor", text: "See that first line? FROM node:20-alpine. Sets your base — everything else in the recipe builds on top of it. A Dockerfile starts from a base image with FROM." },
         { type: "dialogue", speaker: "carl", text: "And RUN versus CMD — what's the difference? Sound the same to me." },
-        { type: "dialogue", speaker: "mentor", text: "RUN executes right there while I'm building the crate — bakes npm install straight into a layer. CMD just writes down what runs when somebody opens the crate later, at container START. One happens now, one happens later." },
+        { type: "dialogue", speaker: "mentor", text: "RUN executes right there while I'm building the crate — bakes npm install straight into a layer." },
+        { type: "dialogue", speaker: "mentor", text: "CMD just writes down what runs when somebody opens the crate later, at container START. One happens now, one happens later." },
         { type: "dialogue", speaker: "mentor", text: "COPY hauls files from wherever I ran that build command — the build context — into the image. Miss a file in your context, it never makes it in." },
         { type: "dialogue", speaker: "mentor", text: "That command up top, docker build -t web . — the dot means 'build context is right here, this directory.' The -t tags the result web, so you can find it again." },
       ],
@@ -140,7 +141,8 @@ window.GameData.modules[3] = {
           ] },
         { type: "dialogue", speaker: "carl", text: "What keeps my node_modules and .git folder out of the build in the first place?" },
         { type: "dialogue", speaker: "mentor", text: ".dockerignore, same idea as .gitignore. List what the build context should skip — keeps junk, and secrets, out of the image entirely." },
-        { type: "dialogue", speaker: "mentor", text: "CMD sets a default start command, easy to override — run the container with a different command on the end, that wins. ENTRYPOINT's less easily brushed aside; the two often work together to shape how a container starts." },
+        { type: "dialogue", speaker: "mentor", text: "CMD sets a default start command, easy to override — run the container with a different command on the end, that wins." },
+        { type: "dialogue", speaker: "mentor", text: "ENTRYPOINT's less easily brushed aside; the two often work together to shape how a container starts." },
       ],
       questions: [
         { type: "mc", prompt: "Why does a smaller image size matter?", options: [
