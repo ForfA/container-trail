@@ -373,6 +373,16 @@
     stackDiagram(container, rows, step);
   };
 
+  Diagrams["multi-stage"] = function (container, step) {
+    // steps: 0 base images, 1 build vs idle runtime, 2 artifact copied into slim final image
+    var rows = [
+      [{ label: "FROM node:20 (build)", fill: "#000" }, { label: "FROM node:20-alpine", fill: "#000" }],
+      [{ label: "RUN build (compilers)", fill: "#888" }, { label: "(slim, untouched)", fill: "#888" }],
+      [{ label: "OUT: /app/dist", fill: "#ccc" }, { label: "COPY --from=build dist", fill: "#ccc" }],
+    ];
+    stackDiagram(container, rows, step);
+  };
+
   window.Diagrams = Diagrams;
   window.DIAGRAM_IDS = Object.keys(Diagrams);
 })();

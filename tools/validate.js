@@ -2,7 +2,7 @@
 "use strict";
 const path = require("path");
 
-const KNOWN_DIAGRAMS = ["vm-vs-container", "image-layers"]; // extend when screens.js gains diagrams
+const KNOWN_DIAGRAMS = ["vm-vs-container", "image-layers", "multi-stage"]; // extend when screens.js gains diagrams
 
 function nonEmpty(errs, where, name, v) {
   if (typeof v !== "string" || v.trim() === "") errs.push(where + ": empty or missing " + name);
