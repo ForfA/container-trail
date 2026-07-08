@@ -91,7 +91,7 @@
 (function () {
   var S = window.Screens;
 
-  function sceneNode(scene, mod, onAdvance) {
+  function sceneNode(scene, mod) {
     var box = S.el("div", "panel");
     if (scene.type === "dialogue") {
       var d = S.el("div", "dialogue-box");
@@ -162,6 +162,7 @@
             w.inp.replaceWith(document.createTextNode(w.line.cmd));
             term.appendChild(document.createTextNode("\n" + w.line.output + "\n"));
             waitingInput = null; i++;
+            return false;
           }
           if (i >= scene.lines.length) return true;
           return showLine() === true;
@@ -170,7 +171,7 @@
     }
     if (scene.type === "widget") {
       var done = false;
-      window.Widgets.mount(scene.id, box, function () { done = true; onAdvance(); });
+      window.Widgets.mount(scene.id, box, function () { done = true; });
       return { node: box, interactive: true, advance: function () { return done; } };
     }
     throw new Error("unknown scene type: " + scene.type);
@@ -190,7 +191,7 @@
     function show() {
       S.clear(app);
       var screen = S.el("div", "screen");
-      var current = sceneNode(scenes[idx], mod, next);
+      var current = sceneNode(scenes[idx], mod);
       screen.appendChild(current.node);
       var b = S.el("button", "btn", "Onward");
       b.onclick = next;
