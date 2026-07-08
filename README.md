@@ -5,7 +5,6 @@ Follow Carl the cowboy from Monolith Gulch along the Orchestration Trail.
 
 ## Run it (recommended)
 
-    cd container-trail
     python3 -m http.server 8123
 
 Open http://localhost:8123 — progress saves reliably in every browser.
