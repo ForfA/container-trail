@@ -6,7 +6,7 @@ window.GameData.modules[2] = {
   town: "Docker Flats",
   mentor: { name: "Ranger Tess", spriteId: "mentor3", intro: "Herds the containers. Keeps count. Ropes the stragglers." },
   arrival: [
-    { type: "vignette", id: "town", caption: "Docker Flats. Corrals of crates, dust, and a herd that needs minding." },
+    { type: "vignette", id: "town-flats", caption: "Docker Flats. Corrals of crates, dust, and a herd that needs minding." },
     { type: "vignette", id: "crate", caption: "Every crate here is a container, waiting on somebody to run it." },
     { type: "dialogue", speaker: "mentor", text: "Name's Tess. Nils showed you what a container is. I'll show you how to work one without getting kicked." },
   ],
@@ -90,7 +90,6 @@ window.GameData.modules[2] = {
             { cmd: "exit", output: "$" },
             { cmd: "docker stop web", output: "web" },
             { cmd: "docker start web", output: "web" },
-            { cmd: "docker rm -f web", output: "web" },
           ] },
         { type: "dialogue", speaker: "mentor", text: "`docker stop` doesn't just shoot it. Sends SIGTERM first — polite ask to shut down clean. Waits ten seconds by default. Still up? Then SIGKILL." },
         { type: "dialogue", speaker: "carl", text: "And once it's stopped, is it just... gone?" },

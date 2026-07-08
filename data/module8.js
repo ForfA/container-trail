@@ -6,7 +6,7 @@ window.GameData.modules[7] = {
   town: "Production Ridge",
   mentor: { name: "Watchman Ada", spriteId: "mentor8", intro: "Kind, paranoid, checklist for everything — night-watch veteran of the ridge." },
   arrival: [
-    { type: "vignette", id: "town", caption: "Production Ridge. Watch-fires strung along the high line, embers holdin' back a black sky." },
+    { type: "vignette", id: "town-ridge", caption: "Production Ridge. Watch-fires strung along the high line, embers holdin' back a black sky." },
     { type: "dialogue", speaker: "mentor", text: "Name's Ada. Night-watch, this ridge, longer than I care to count. Kind's easy. Careful's what keeps a town standin'." },
     { type: "dialogue", speaker: "carl", text: "Last stop, they tell me. What's left to learn, up here in the dark?" },
     { type: "dialogue", speaker: "mentor", text: "Keepin' it alive, once it's runnin'. Checklist for everything, Carl — that's the whole job. Let's walk it." },

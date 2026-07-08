@@ -6,7 +6,7 @@ window.GameData.modules[4] = {
   town: "Bridge Crossing",
   mentor: { name: "Bridgekeeper Mo", spriteId: "mentor5", intro: "Charges one honest question, same toll every crossing." },
   arrival: [
-    { type: "vignette", id: "town", caption: "Bridge Crossing. A toll bridge arcs out over the ravine, the far bank lost in haze." },
+    { type: "vignette", id: "town-bridge", caption: "Bridge Crossing. A toll bridge arcs out over the ravine, the far bank lost in haze." },
     { type: "dialogue", speaker: "mentor", text: "Mo. I keep this bridge. Toll's one honest question — ask it, and I'll ask you one back before you cross." },
     { type: "dialogue", speaker: "carl", text: "Fair enough. Here's mine: why's a bridge even needed? Silas already built the crate." },
     { type: "dialogue", speaker: "mentor", text: "Built ain't reachable. That's my question back to you — what good's a crate nobody outside can get to?" },

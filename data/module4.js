@@ -6,7 +6,7 @@ window.GameData.modules[3] = {
   town: "Buildtown",
   mentor: { name: "Merchant Silas", spriteId: "mentor4", intro: "Images, fresh-built, best cache in the territory." },
   arrival: [
-    { type: "vignette", id: "town", caption: "Buildtown. Kilns and forges smoke where images get made, not just moved." },
+    { type: "vignette", id: "town-build", caption: "Buildtown. Kilns and forges smoke where images get made, not just moved." },
     { type: "dialogue", speaker: "mentor", text: "Silas Crate, at your service! Images, fresh-built, best cache in the territory — step right up, stranger." },
     { type: "dialogue", speaker: "mentor", text: "Every crate on my shelf started as a recipe. Let me show you how it's baked." },
   ],
@@ -100,8 +100,11 @@ window.GameData.modules[3] = {
         { type: "dialogue", speaker: "mentor", text: "Every crate needs a brand, stranger! registry slash repository colon tag — that's the full name. Leave off the registry and Docker figures Docker Hub, the biggest stall in the territory." },
         { type: "terminal", playerTypes: false, lines: [
             { cmd: "docker tag web silas/web:1.0", output: "$" },
-            { cmd: "docker push silas/web:1.0", output: "The push refers to repository [docker.io/silas/web]\na1b2c3d4e5f6: Pushed\nb2c3d4e5f6a7: Pushed\nc3d4e5f6a7b8: Pushed\nd4e5f6a7b8c9: Layer already exists\n1.0: digest: sha256:6f2f9c4d1a3b8e7c5d6a9b0f1e2d3c4b5a6978869504132211fedcba0987654 size: 1369" },
-            { cmd: "docker pull silas/web:1.0", output: "1.0: Pulling from silas/web\na1b2c3d4e5f6: Pull complete\nb2c3d4e5f6a7: Pull complete\nc3d4e5f6a7b8: Pull complete\nd4e5f6a7b8c9: Pull complete\nDigest: sha256:6f2f9c4d1a3b8e7c5d6a9b0f1e2d3c4b5a6978869504132211fedcba0987654\nStatus: Downloaded newer image for silas/web:1.0\ndocker.io/silas/web:1.0" },
+            { cmd: "docker push silas/web:1.0", output: "The push refers to repository [docker.io/silas/web]\na1b2c3d4e5f6: Pushed\nb2c3d4e5f6a7: Pushed\nc3d4e5f6a7b8: Pushed\nd4e5f6a7b8c9: Layer already exists\n1.0: digest: sha256:6f2f9c4d1a3b8e7c5d6a9b0f1e2d3c4b5a69788695041322110fedcba0987654 size: 1369" },
+          ] },
+        { type: "dialogue", speaker: "mentor", text: "Crate's on the registry shelf now. Watch some other rancher's machine, clear across the territory, fetch it down." },
+        { type: "terminal", playerTypes: false, lines: [
+            { cmd: "docker pull silas/web:1.0", output: "1.0: Pulling from silas/web\na1b2c3d4e5f6: Pull complete\nb2c3d4e5f6a7: Pull complete\nc3d4e5f6a7b8: Pull complete\nd4e5f6a7b8c9: Pull complete\nDigest: sha256:6f2f9c4d1a3b8e7c5d6a9b0f1e2d3c4b5a69788695041322110fedcba0987654\nStatus: Downloaded newer image for silas/web:1.0\ndocker.io/silas/web:1.0" },
           ] },
         { type: "dialogue", speaker: "mentor", text: "Notice I tagged it 1.0, not latest. latest's just a name, same as any other tag — Docker doesn't check dates. Leave the tag off entirely, and you default to latest, but that doesn't mean newest." },
         { type: "dialogue", speaker: "mentor", text: "Push sends a crate up to the registry's shelf. Pull brings one down. Simple as that, stranger." },

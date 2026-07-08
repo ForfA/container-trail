@@ -6,7 +6,7 @@ window.GameData.modules[6] = {
   town: "Deployment Pass",
   mentor: { name: "Drover Kip", spriteId: "mentor7", intro: "Moves a thousand head with standing orders, not shouting." },
   arrival: [
-    { type: "vignette", id: "pod", caption: "Deployment Pass. Switchbacks climb thin air — pod after pod grazing the high ledges, herd after matched herd." },
+    { type: "vignette", id: "town-pass", caption: "Deployment Pass. Switchbacks climb thin air — pod after pod grazing the high ledges, herd after matched herd." },
     { type: "dialogue", speaker: "mentor", text: "Kip. I move a thousand head up this pass without raisin' my voice once. Standin' orders do the work." },
     { type: "dialogue", speaker: "carl", text: "Standing orders? Not out there shoutin' at every pod yourself?" },
     { type: "dialogue", speaker: "mentor", text: "Never. Write the order once — how many head, what breed — and the herd holds itself to it. That's what I'm here to teach you." },

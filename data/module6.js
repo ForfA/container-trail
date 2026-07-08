@@ -6,7 +6,7 @@ window.GameData.modules[5] = {
   town: "Helmsburg",
   mentor: { name: "Helmswoman Vera", spriteId: "mentor6", intro: "Watches every hull in the fleet at once, calm as still water." },
   arrival: [
-    { type: "vignette", id: "town", caption: "Helmsburg. A river port, wharves crowded with boats — more hulls than one pair of hands could ever tie off." },
+    { type: "vignette", id: "town-helm", caption: "Helmsburg. A river port, wharves crowded with boats — more hulls than one pair of hands could ever tie off." },
     { type: "dialogue", speaker: "mentor", text: "Vera. Fleet-mistress here. I don't run one boat — I watch the whole fleet, all at once, and keep it steady." },
     { type: "dialogue", speaker: "carl", text: "All at once? Mo said you steer hundreds. One wagon at a time about wore me out already." },
     { type: "dialogue", speaker: "mentor", text: "One hand, one boat — that scales to maybe a dozen. Past that you need somethin' that steers the fleet itself. Climb aboard, I'll show you." },

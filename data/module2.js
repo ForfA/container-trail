@@ -6,7 +6,7 @@ window.GameData.modules[1] = {
   town: "Kernel Canyon",
   mentor: { name: "Hermit Nils", spriteId: "mentor2", intro: "Moved into this canyon to be closer to the kernel." },
   arrival: [
-    { type: "vignette", id: "town", caption: "Kernel Canyon. Steep rock on both sides, dwellers keeping to narrow paths." },
+    { type: "vignette", id: "town-canyon", caption: "Kernel Canyon. Steep rock on both sides, dwellers keeping to narrow paths." },
     { type: "dialogue", speaker: "mentor", text: "Name's Nils. Moved into this canyon to be closer to the kernel." },
     { type: "dialogue", speaker: "mentor", text: "These walls don't move anything. They just decide what each dweller can see." },
   ],
@@ -61,9 +61,9 @@ window.GameData.modules[1] = {
         { type: "dialogue", speaker: "mentor", text: "Different fence. Namespaces decide what you SEE. Cgroups decide what you USE — CPU, memory, disk I/O. Control groups. Cgroups for short." },
         { type: "dialogue", speaker: "mentor", text: "Watch what happens when one goes over its ration." },
         { type: "terminal", playerTypes: false, lines: [
-            { cmd: "docker run -d --memory 256m --cpus 1 --name web nginx", output: "f138fb9081fdfdbf9ae98cb2f5e4aa0daa15c701b991cba1a0dfcf72fde4ae4e" },
-            { cmd: "docker ps", output: "CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS     NAMES\nf138fb9081fd   nginx     \"/docker-entrypoint.…\"   2 seconds ago   Up 2 seconds             web" },
-            { cmd: "docker ps -a", output: "CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS                      PORTS     NAMES\nf138fb9081fd   nginx     \"/docker-entrypoint.…\"   38 seconds ago   Exited (137) 2 seconds ago             web" },
+            { cmd: "docker run -d --memory 256m --cpus 1 --name hog memhog", output: "f138fb9081fdfdbf9ae98cb2f5e4aa0daa15c701b991cba1a0dfcf72fde4ae4e" },
+            { cmd: "docker ps", output: "CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS     NAMES\nf138fb9081fd   memhog    \"memhog\"                 2 seconds ago   Up 2 seconds             hog" },
+            { cmd: "docker ps -a", output: "CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS                      PORTS     NAMES\nf138fb9081fd   memhog    \"memhog\"                 38 seconds ago   Exited (137) 2 seconds ago             hog" },
           ] },
         { type: "dialogue", speaker: "mentor", text: "Fed it a memory hog on purpose. 256 megabytes, and it went over. 137. That's 128 plus signal 9 — SIGKILL. The kernel's OOM killer shot it down." },
         { type: "dialogue", speaker: "carl", text: "And if it'd gone over on CPU instead of memory?" },

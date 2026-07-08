@@ -18,6 +18,6 @@ block saving on file:// — the game still runs, with an in-session save only.
 ## Development
 
     node tools/validate.js   # schema-check all module content
-    node --test tests/      # unit tests (Node >= 18)
+    node --test tests/*.test.js   # unit tests (Node >= 18)
 
 No dependencies, no build step.
