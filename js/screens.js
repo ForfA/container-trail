@@ -236,7 +236,7 @@
       s.appendChild(S.el("h2", null, level.title + " — Showdown"));
       var p = sd.progress();
       var canteen = "";
-      for (var i = 0; i < 3; i++) canteen += i < sd.waters() ? "▮" : "▯";
+      for (var i = 0; i < 3; i++) canteen += i < sd.waters() ? "■" : "□";
       s.appendChild(S.el("div", "canteen", "WATER " + canteen + "   " + p.answered + "/" + p.total));
       if (feedback) s.appendChild(feedback);
       else s.appendChild(questionNode());

@@ -23,6 +23,7 @@ body {
   image-rendering: pixelated;
 }
 canvas, .pixel-canvas { image-rendering: pixelated; display: block; }
+.screen > .pixel-canvas { align-self: center; }
 .screen { display: flex; flex-direction: column; gap: 12px; min-height: 600px; }
 .screen h1, .screen h2 { text-transform: uppercase; letter-spacing: 2px; }
 .panel { border: 3px solid var(--ink); padding: 12px; background: var(--paper); }
