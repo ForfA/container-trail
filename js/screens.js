@@ -230,14 +230,14 @@
     ctx.state.markAttempted(m, l);
     var sd = window.createShowdown(level.questions);
 
-    function render(feedback) {
+    function render(feedback, canteenHit) {
       S.clear(app);
       var s = S.el("div", "screen");
       s.appendChild(S.el("h2", null, level.title + " — Showdown"));
       var p = sd.progress();
       var canteen = "";
       for (var i = 0; i < 3; i++) canteen += i < sd.waters() ? "■" : "□";
-      s.appendChild(S.el("div", "canteen", "WATER " + canteen + "   " + p.answered + "/" + p.total));
+      s.appendChild(S.el("div", "canteen" + (canteenHit ? " canteen-alert" : ""), "WATER " + canteen + "   " + p.answered + "/" + p.total));
       if (feedback) s.appendChild(feedback);
       else s.appendChild(questionNode());
       app.appendChild(s);
@@ -249,10 +249,18 @@
       box.appendChild(S.el("p", null, q.prompt));
       var opts = S.el("div", "options");
       function submit(resp) {
+        var askedQ = q;
         var r = sd.answer(resp);
-        if (r.finished) return finish();
-        if (r.correct) return render();
-        var fb = S.el("div", "panel");
+        if (r.correct) {
+          var ack = S.el("div", "panel panel-correct");
+          ack.appendChild(S.el("p", "ack-line", "That's the way."));
+          ack.appendChild(S.el("p", null, askedQ.explain));
+          var next = S.el("button", "btn", r.finished ? "Onward" : "Next");
+          next.onclick = function () { if (r.finished) finish(); else render(); };
+          ack.appendChild(next);
+          return render(ack);
+        }
+        var fb = S.el("div", "panel panel-wrong");
         fb.appendChild(S.el("p", null, r.restarted
           ? "Canteen's dry. Back to the start of the showdown — questions reshuffled."
           : "Not quite."));
@@ -260,7 +268,7 @@
         var b = S.el("button", "btn", r.restarted ? "Refill & retry" : "Try again");
         b.onclick = function () { render(); };
         fb.appendChild(b);
-        render(fb);
+        render(fb, true);
       }
       if (q.type === "mc") {
         q.options.forEach(function (opt, i) {

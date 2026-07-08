@@ -61,5 +61,21 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; background: v
 input[type="range"]::-webkit-slider-runnable-track { background: var(--pale); height: 12px; border: 2px solid var(--ink); border-radius: 0; }
 input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: var(--ink); border: none; border-radius: 0; margin-top: -4px; }
 .canteen { font-size: 20px; letter-spacing: 4px; }
+.canteen-alert { background: var(--ink); color: var(--paper); padding: 2px 8px; border: 2px solid var(--ink); display: inline-block; }
 .options { display: flex; flex-direction: column; gap: 8px; }
 .hidden { display: none; }
+
+.panel-wrong {
+  background: var(--ink); color: var(--paper);
+  border-width: 6px; padding: 16px;
+}
+.panel-wrong .btn {
+  background: var(--paper); color: var(--ink); border-color: var(--paper);
+  box-shadow: 4px 4px 0 var(--paper);
+}
+.panel-wrong .btn:hover:not(:disabled) { background: var(--pale); color: var(--ink); border-color: var(--paper); }
+
+.panel-correct {
+  background: var(--pale); border-width: 6px; padding: 16px;
+}
+.panel-correct .ack-line { font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
