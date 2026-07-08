@@ -12,6 +12,7 @@ body {
   font-family: "Courier New", ui-monospace, monospace;
   display: flex;
   align-items: center;
+  align-items: safe center;
   justify-content: center;
 }
 #app {
@@ -24,7 +25,7 @@ body {
 }
 canvas, .pixel-canvas { image-rendering: pixelated; display: block; }
 .screen > .pixel-canvas { align-self: center; }
-.screen { display: flex; flex-direction: column; gap: 12px; min-height: 600px; }
+.screen { display: flex; flex-direction: column; gap: 12px; }
 .screen h1, .screen h2 { text-transform: uppercase; letter-spacing: 2px; }
 .panel { border: 3px solid var(--ink); padding: 12px; background: var(--paper); }
 .btn {
