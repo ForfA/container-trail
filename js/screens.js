@@ -383,6 +383,26 @@
     stackDiagram(container, rows, step);
   };
 
+  Diagrams["cluster"] = function (container, step) {
+    // steps: 0 control plane, 1 worker nodes, 2 pods on those nodes
+    var rows = [
+      [{ label: "CONTROL PLANE", fill: "#000" }],
+      [{ label: "NODE 1", fill: "#888" }, { label: "NODE 2", fill: "#888" }, { label: "NODE 3", fill: "#888" }],
+      [{ label: "POD", fill: "#ccc" }, { label: "POD", fill: "#ccc" }, { label: "POD", fill: "#ccc" }],
+    ];
+    stackDiagram(container, rows, step);
+  };
+
+  Diagrams["service"] = function (container, step) {
+    // steps: 0 the Service (stable name/IP), 1 label-based selection, 2 the pods it fans out to
+    var rows = [
+      [{ label: "SERVICE web", fill: "#000" }],
+      [{ label: "selects by label: app=web", fill: "#888" }],
+      [{ label: "POD", fill: "#ccc" }, { label: "POD", fill: "#ccc" }, { label: "POD", fill: "#ccc" }],
+    ];
+    stackDiagram(container, rows, step);
+  };
+
   window.Diagrams = Diagrams;
   window.DIAGRAM_IDS = Object.keys(Diagrams);
 })();
