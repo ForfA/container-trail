@@ -114,8 +114,7 @@ window.GameData.modules[7] = {
         { type: "dialogue", speaker: "mentor", text: "Fourth — keep the image current. Old software's got old holes. Scan it, patch it, don't let it rot on the shelf." },
         { type: "dialogue", speaker: "carl", text: "And all that fencin' Nils showed me — namespaces, cgroups — that ain't enough on its own?" },
         { type: "dialogue", speaker: "mentor", text: "Not near enough. Every container on this ridge shares the same kernel underneath. That's a thinner wall than most figure." },
-        { type: "dialogue", speaker: "mentor", text: "Good habits are what actually holds the gate, Carl. The fence alone never does." },
-        { type: "dialogue", speaker: "mentor", text: "Reckon that's everything. Watch craft's just discipline, dressed up fancy." },
+        { type: "dialogue", speaker: "mentor", text: "Good habits are what actually holds the gate, Carl. The fence alone never does. Reckon that's everything. Watch craft's just discipline, dressed up fancy." },
       ],
       questions: [
         { type: "mc", prompt: "Why shouldn't a container run as root?", options: [

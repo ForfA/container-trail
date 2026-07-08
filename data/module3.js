@@ -21,8 +21,7 @@ window.GameData.modules[2] = {
         { type: "dialogue", speaker: "carl", text: "Nils showed me what a container's made of. How do I actually start one?" },
         { type: "dialogue", speaker: "mentor", text: "One command. `docker run IMAGE` creates a container from that image AND starts it. One move, not two." },
         { type: "dialogue", speaker: "mentor", text: "Image's not on this machine yet? Docker pulls it down from a registry first, then runs it. Every time, automatic." },
-        { type: "dialogue", speaker: "mentor", text: "Add `-d` and it runs detached — background, hands your prompt right back. Add `--name` and you've got a handle for it, 'stead of some long ID." },
-        { type: "dialogue", speaker: "mentor", text: "Bring up nginx. Detached. Call it web. Type it." },
+        { type: "dialogue", speaker: "mentor", text: "Add `-d` and it runs detached — background, hands your prompt right back. Add `--name` and you've got a handle for it, 'stead of some long ID. Bring up nginx. Detached. Call it web. Type it." },
         { type: "terminal", playerTypes: true, lines: [
             { cmd: "docker run -d --name web nginx", output: "Unable to find image 'nginx:latest' locally\nlatest: Pulling from library/nginx\nbcb2a686d1fc: Pull complete\n2e629e3a5e09: Pull complete\n8c2e081ebc86: Pull complete\nDigest: sha256:3417b2dba0d9f1cb9dda3241d28a5d7d5a81580758a3ecd38661258f35648ef4\nStatus: Downloaded newer image for nginx:latest\n178c172ce181223fb4ef9999859454cefc12a7dc54a3584b8c6da288479c9de4" },
           ] },
@@ -63,8 +62,7 @@ window.GameData.modules[2] = {
           ] },
         { type: "dialogue", speaker: "mentor", text: "See db there in the second list? Ran once, finished clean, exit code 0. Add `-a` and stopped ones show up too, not just running." },
         { type: "dialogue", speaker: "carl", text: "So a container's always either running or stopped, that's it?" },
-        { type: "dialogue", speaker: "mentor", text: "Three states you'll see most: created, running, exited. `docker ps` alone shows you running. Add `-a` for all three." },
-        { type: "dialogue", speaker: "mentor", text: "Want to know what one's been saying? `docker logs NAME`. Every line it's printed." },
+        { type: "dialogue", speaker: "mentor", text: "Three states you'll see most: created, running, exited. `docker ps` alone shows you running. Add `-a` for all three. Want to know what one's been saying? `docker logs NAME`. Every line it's printed." },
       ],
       questions: [
         { type: "cmd", prompt: "Type the command to list only the containers currently running.", accept: ["docker ps", "docker container ls"], explain: "docker ps with no flags lists running containers only. docker container ls is the newer, equivalent form of the same command." },

@@ -19,8 +19,7 @@ window.GameData.modules[1] = {
       title: "Walls You Can't See",
       scenes: [
         { type: "dialogue", speaker: "carl", text: "Everyone here keeps to their own patch. How's a container know where its patch ends?" },
-        { type: "dialogue", speaker: "mentor", text: "Namespaces. Six kinds. Each one hides part of the machine from a process. Namespaces decide what a process can SEE." },
-        { type: "dialogue", speaker: "mentor", text: "Raise the walls yourself. Watch the view shrink." },
+        { type: "dialogue", speaker: "mentor", text: "Namespaces. Six kinds. Each one hides part of the machine from a process. Namespaces decide what a process can SEE. Raise the walls yourself. Watch the view shrink." },
         { type: "widget", id: "namespace-walls" },
         { type: "dialogue", speaker: "mentor", text: "Three more you didn't touch. UTS hides the hostname. IPC hides shared memory and message queues. USER hides user and group IDs." },
         { type: "dialogue", speaker: "carl", text: "So a fresh container starts with all six walls already up?" },
@@ -58,8 +57,7 @@ window.GameData.modules[1] = {
       title: "Rations and Fences",
       scenes: [
         { type: "dialogue", speaker: "carl", text: "Namespaces hide things from a process. What stops it from eating the whole machine?" },
-        { type: "dialogue", speaker: "mentor", text: "Different fence. Namespaces decide what you SEE. Cgroups decide what you USE — CPU, memory, disk I/O. Control groups. Cgroups for short." },
-        { type: "dialogue", speaker: "mentor", text: "Watch what happens when one goes over its ration." },
+        { type: "dialogue", speaker: "mentor", text: "Different fence. Namespaces decide what you SEE. Cgroups decide what you USE — CPU, memory, disk I/O. Control groups. Cgroups for short. Watch what happens when one goes over its ration." },
         { type: "terminal", playerTypes: false, lines: [
             { cmd: "docker run -d --memory 256m --cpus 1 --name hog memhog", output: "f138fb9081fdfdbf9ae98cb2f5e4aa0daa15c701b991cba1a0dfcf72fde4ae4e" },
             { cmd: "docker ps", output: "CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS     NAMES\nf138fb9081fd   memhog    \"memhog\"                 2 seconds ago   Up 2 seconds             hog" },
